@@ -11,8 +11,8 @@ public class Client {
     public static void main(String[] args) throws Exception{
         Socket socket = new Socket(InetAddress.getLocalHost(), 8080);
         PrintStream bw = new PrintStream(socket.getOutputStream());
-        bw.println("Hello world!");
         BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        bw.println("Hello world!");
         System.out.println(br.readLine());
         socket.close();
     }

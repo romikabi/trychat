@@ -1,9 +1,6 @@
 package server;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
 
@@ -17,7 +14,9 @@ public class Server {
         while (true){
             Socket socket = serverSocket.accept();
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter pw = new PrintWriter(socket.getOutputStream());
             System.out.println(br.readLine());
+            pw.println("Done");
             socket.close();
         }
     }
