@@ -10,8 +10,9 @@ import java.util.Enumeration;
 /**
  * Created by romanabuzyarov on 10.04.17.
  */
-public class Main {
+public class Server {
     public static void main(String[] args)throws Exception{
+
         ServerSocket serverSocket = new ServerSocket(8080);
         while (true){
             Socket socket = serverSocket.accept();
