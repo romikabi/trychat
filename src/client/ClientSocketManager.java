@@ -18,13 +18,6 @@ public class ClientSocketManager extends Thread implements Closeable {
 
         sendThread = new SendThread();
         receiveThread = new ReceiveThread();
-
-        sendThread.start();
-        receiveThread.start();
-
-        this.setDaemon(true);
-        receiveThread.setDaemon(true);
-        sendThread.setDaemon(true);
     }
 
     @Override
@@ -58,13 +51,14 @@ public class ClientSocketManager extends Thread implements Closeable {
             //todo
             System.out.println("run send");
 
-            PrintStream writeToServer;
+            PrintStream writeToServer = null;
+            System.out.println("Output stream is setting up.");
             try {
                 writeToServer = new PrintStream((socket.getOutputStream()));
             } catch (IOException e) {
-                return;
+                e.printStackTrace();
             }
-
+            System.out.println("Output stream set up.");
             while (!Thread.currentThread().isInterrupted()) {
                 String mes = "";
                 System.out.println("write message");
@@ -91,9 +85,10 @@ public class ClientSocketManager extends Thread implements Closeable {
             try {
                 readFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             } catch (IOException e) {
+                e.printStackTrace();
                 return;
             }
-            while (!Thread.currentThread().isInterrupted() && socket.isClosed()) {
+            while (!Thread.currentThread().isInterrupted()) {
                 synchronized (readFromServer) {
                     String mes = "";
                     try {

@@ -11,5 +11,6 @@ public class Client {
     public static void main(String[] args) throws Exception {
         Socket socket = new Socket(InetAddress.getLocalHost(), 4900);
         ClientSocketManager manager = new ClientSocketManager(socket);
+        manager.start();
     }
 }
