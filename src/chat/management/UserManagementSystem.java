@@ -6,6 +6,7 @@ import chat.user.UserId;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
@@ -19,7 +20,7 @@ public class UserManagementSystem {
     public UserManagementSystem() {
         users = new TreeMap<>();
         try {
-            Scanner scan = new Scanner(new File("data/users.txt"));
+            Scanner scan = new Scanner(new File("src/data/users.txt"));
             while (scan.hasNext()) {
                 String name = scan.next();
                 int pass = scan.nextInt();
@@ -36,5 +37,20 @@ public class UserManagementSystem {
             throw new IllegalArgumentException("Such id was already used!");
 
         users.put(id.getNickname(), new User(id, pass));
+        PrintStream writer;
+        try {
+            writer = new PrintStream(new File("src/data/users.txt"));
+            writer.println(id.getNickname() + " " + String.valueOf(pass.getHash()));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized User login(UserId id, Password hash) throws IllegalAccessException {
+        if (users.get(id.getNickname()).checkPass(hash))
+            return users.get(id.getNickname());
+
+        throw new IllegalAccessException("Wrong password!");
     }
 }

@@ -16,4 +16,12 @@ public class User {
         this.id = new UserId(id.getNickname());
         this.pass = new Password(pass.getHash());
     }
+
+    public boolean checkPass(Password hash) {
+        return hash.getHash() == pass.getHash();
+    }
+
+    public UserId getId() {
+        return id;
+    }
 }
