@@ -20,7 +20,7 @@ public class UserSocketManager extends Thread implements Closeable {
     private final Socket socket;
     private ConcurrentMap<String, BlockingQueue<Message>> stock;
 
-    private RecieveThread receiveThread;
+    private ReceiveThread receiveThread;
     private SendThread sendThread;
 
     public UserSocketManager(User user, Socket connection, ConcurrentMap<String, BlockingQueue<Message>> stock) {
@@ -28,7 +28,7 @@ public class UserSocketManager extends Thread implements Closeable {
         this.socket = connection;
         this.stock = stock;
 
-        receiveThread = new RecieveThread();
+        receiveThread = new ReceiveThread();
         sendThread = new SendThread();
         this.setDaemon(true);
         receiveThread.setDaemon(true);
@@ -60,7 +60,7 @@ public class UserSocketManager extends Thread implements Closeable {
         socket.close();
     }
 
-    private class RecieveThread extends Thread {
+    private class ReceiveThread extends Thread {
 
         @Override
         public void run() {
@@ -87,6 +87,10 @@ public class UserSocketManager extends Thread implements Closeable {
                 }
                 //todo
                 System.out.println(content + " recieved");
+
+                //todo
+                if (content == null)
+                    return;
 
                 List<String> parts = new ArrayList<>(Arrays.asList(content.split(" ")));
                 String target = parts.get(0);

@@ -1,0 +1,10 @@
+Client -> Server
+0 name pass - registration
+1 name pass - login
+
+Server -> Client
+401 - successfully login
+402 - successfully registered
+
+501 - wrong password
+502 - used username
