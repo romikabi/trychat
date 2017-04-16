@@ -20,7 +20,7 @@ public class UserManagementSystem {
     public UserManagementSystem() {
         users = new TreeMap<>();
         try {
-            Scanner scan = new Scanner(new File("src/data/users.txt"));
+            Scanner scan = new Scanner(new File("data/users.txt"));
             while (scan.hasNext()) {
                 String name = scan.next();
                 int pass = scan.nextInt();
@@ -39,7 +39,7 @@ public class UserManagementSystem {
         users.put(id.getNickname(), new User(id, pass));
         PrintStream writer;
         try {
-            writer = new PrintStream(new File("src/data/users.txt"));
+            writer = new PrintStream(new File("data/users.txt"));
             writer.println(id.getNickname() + " " + String.valueOf(pass.getHash()));
             writer.close();
         } catch (FileNotFoundException e) {
@@ -47,7 +47,10 @@ public class UserManagementSystem {
         }
     }
 
-    public synchronized User login(UserId id, Password hash) throws IllegalAccessException {
+    public synchronized User login(UserId id, Password hash) throws IllegalAccessException, IllegalArgumentException {
+        if (!users.containsKey(id.getNickname()))
+            throw new IllegalArgumentException("No such id!");
+
         if (users.get(id.getNickname()).checkPass(hash))
             return users.get(id.getNickname());
 

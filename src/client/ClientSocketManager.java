@@ -99,6 +99,11 @@ public class ClientSocketManager extends Thread implements Closeable {
                         continue;
 
                     //todo
+                    if (mes == null) {
+                        return;
+                    }
+
+                    //todo
                     System.out.println(mes);
                 }
             }
